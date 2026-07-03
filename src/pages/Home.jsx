@@ -5,6 +5,7 @@ import SummaryCard from "../components/SummaryCard";
 import TransactionForm from "../components/TransactionForm";
 import CategoryChart from "../components/CategoryChart";
 import FilterBar from "../components/FilterBar";
+import BudgetManager from "../components/BudgetManager";
 import { exportToPDF } from "../utils/exportPDF";
 import "../styles/summary.css";
 
@@ -19,6 +20,11 @@ export default function Home() {
     return saved ? JSON.parse(saved) : [];
   });
 
+  const [budgets, setBudgets] = useState(() => {
+    const saved = localStorage.getItem("floostrack-budgets");
+    return saved ? JSON.parse(saved) : {};
+  });
+
   const [modalType, setModalType] = useState(null);
   const [editingTransaction, setEditingTransaction] = useState(null);
   const [filters, setFilters] = useState({ search: "", type: "all", category: "all", month: "all" });
@@ -26,6 +32,10 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem("floostrack-transactions", JSON.stringify(transactions));
   }, [transactions]);
+
+  useEffect(() => {
+    localStorage.setItem("floostrack-budgets", JSON.stringify(budgets));
+  }, [budgets]);
 
   const income = transactions.filter((t) => t.type === "income").reduce((s, t) => s + t.amount, 0);
   const expenses = transactions.filter((t) => t.type === "expense").reduce((s, t) => s + t.amount, 0);
@@ -36,10 +46,33 @@ export default function Home() {
     [transactions]
   );
 
+  const expenseCategories = useMemo(
+    () => [...new Set(transactions.filter((t) => t.type === "expense").map((t) => t.category))],
+    [transactions]
+  );
+
   const months = useMemo(
     () => [...new Set(transactions.map((t) => monthKey(t.id)))],
     [transactions]
   );
+
+  const spentByCategory = useMemo(() => {
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+
+    const spent = {};
+    transactions
+      .filter((t) => t.type === "expense")
+      .filter((t) => {
+        const d = new Date(t.id);
+        return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+      })
+      .forEach((t) => {
+        spent[t.category] = (spent[t.category] || 0) + t.amount;
+      });
+    return spent;
+  }, [transactions]);
 
   const filtered = transactions.filter((t) => {
     if (filters.type !== "all" && t.type !== filters.type) return false;
@@ -103,6 +136,13 @@ export default function Home() {
       </div>
 
       <CategoryChart transactions={transactions} />
+
+      <BudgetManager
+        budgets={budgets}
+        setBudgets={setBudgets}
+        categories={expenseCategories.length > 0 ? expenseCategories : ["Food", "Transport", "Bills", "Shopping", "Entertainment", "Other"]}
+        spentByCategory={spentByCategory}
+      />
 
       <FilterBar filters={filters} setFilters={setFilters} categories={categories} months={months} />
 
