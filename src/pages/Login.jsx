@@ -6,6 +6,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth, googleProvider } from "../firebase";
+import Logo from "../components/Logo";
 import "../styles/login.css";
 
 export default function Login() {
@@ -65,6 +66,9 @@ export default function Login() {
   return (
     <div className="login-page">
       <div className="login-card">
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 12 }}>
+          <Logo size={64} />
+        </div>
         <h1 className="login-logo">Floos<span>Track</span></h1>
         <p className="login-subtitle">{isSignup ? "Create your account" : "Welcome back"}</p>
 
