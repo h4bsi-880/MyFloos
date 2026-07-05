@@ -40,8 +40,12 @@ export default function Home({ user, onLogout }) {
     const unsubscribe = onSnapshot(txRef, (snapshot) => {
       const txs = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
       setTransactions(
-        txs.sort((a, b) => new Date(b.date || b.createdAt) - new Date(a.date || a.createdAt))
-      );
+  txs.sort((a, b) => {
+    const dateDiff = new Date(b.date || b.createdAt) - new Date(a.date || a.createdAt);
+    if (dateDiff !== 0) return dateDiff;
+    return (b.createdAt || 0) - (a.createdAt || 0);
+  })
+);
       setLoadingData(false);
     });
     return unsubscribe;
