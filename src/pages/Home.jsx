@@ -216,10 +216,10 @@ export default function Home({ user, onLogout }) {
                         {t.type === "income" ? "+" : "-"}{t.amount.toFixed(3)} OMR
                       </span>
                       {t.date && (
-                        <span className="tx-date">
-                          {t.date.split("-").reverse().join("-")}
-                        </span>
-                      )}
+  <span className="tx-date">
+    {t.date.split("-").reverse().join("/")}
+  </span>
+)}
                     </div>
                     <button className="edit-btn" onClick={() => openEditModal(t)}>✎</button>
                     <button className="delete-btn" onClick={() => deleteTransaction(t.id)}>✕</button>
