@@ -127,13 +127,13 @@ export default function Home({ user, onLogout }) {
     setEditingTransaction(null);
   }
 
-  async function handleSave(data) {
+  function handleSave(data) {
     if (editingTransaction) {
       const txDoc = doc(db, "users", user.uid, "transactions", editingTransaction.id);
-      await updateDoc(txDoc, data);
+      updateDoc(txDoc, data);
     } else {
       const txRef = collection(db, "users", user.uid, "transactions");
-      await addDoc(txRef, { type: modalType, ...data, createdAt: Date.now() });
+      addDoc(txRef, { type: modalType, ...data, createdAt: Date.now() });
     }
     closeModal();
   }
