@@ -209,8 +209,12 @@ export default function Home({ user, onLogout }) {
                   <div className="tx-info">
                     <span className="tx-desc">{t.description}</span>
                     <span className="tx-category">{t.category}</span>
-                    {t.date && <span className="tx-date">{t.date}</span>}
                   </div>
+                  {t.date && (
+  <span className="tx-date">
+    {t.date.split("-").reverse().join("-")}
+  </span>
+)}
                   <div className="tx-right">
                     <span className="tx-amount">
                       {t.type === "income" ? "+" : "-"}{t.amount.toFixed(3)} OMR

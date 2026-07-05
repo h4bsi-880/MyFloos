@@ -115,10 +115,12 @@
   font-size: 12px;
   opacity: 0.6;
 }
+
 .tx-date {
+  flex: 1;
+  text-align: center;
   font-size: 0.8rem;
   color: #888;
-  margin-left: 8px;
 }
 
 .tx-right {
