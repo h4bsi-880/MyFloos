@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 .loading-screen {
   min-height: 100vh;
   display: flex;
@@ -26,7 +27,9 @@
 }
 
 .loading-message {
+  font-family: 'Poppins', sans-serif;
   font-size: 15px;
+  font-weight: 600;
   opacity: 0.75;
   letter-spacing: 0.3px;
   animation: fade-in-out 1.8s ease-in-out infinite;
