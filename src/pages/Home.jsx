@@ -21,6 +21,7 @@ import { exportToPDF } from "../utils/exportPDF";
 import "../styles/summary.css";
 import { getCategoryIcon } from "../utils/categoryIcons";
 import { Plus } from "lucide-react";
+import LoadingScreen from "../components/LoadingScreen";
 
 function monthKey(timestamp) {
   const d = new Date(timestamp);
@@ -159,13 +160,8 @@ export default function Home({ user, onLogout }) {
     await setDoc(budgetRef, newBudgets);
   }
   if (loadingData) {
-    return (
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}>
-        Loading your data...
-      </div>
-    );
-  }
-
+  return <LoadingScreen />;
+}
   return (
     <div className="home">
       <Header user={user} onLogout={onLogout} />

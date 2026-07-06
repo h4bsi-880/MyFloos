@@ -1,0 +1,48 @@
+.loading-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: #0b1120;
+  color: white;
+}
+
+.loading-logo {
+  animation: spin-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes spin-pulse {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+.loading-message {
+  font-size: 15px;
+  opacity: 0.75;
+  letter-spacing: 0.3px;
+  animation: fade-in-out 1.8s ease-in-out infinite;
+}
+
+@keyframes fade-in-out {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.75;
+  }
+  85% {
+    opacity: 0.75;
+  }
+  100% {
+    opacity: 0;
+  }
+}
