@@ -40,12 +40,12 @@ export default function Home({ user, onLogout }) {
     const unsubscribe = onSnapshot(txRef, (snapshot) => {
       const txs = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
       setTransactions(
-  txs.sort((a, b) => {
-    const dateDiff = new Date(b.date || b.createdAt) - new Date(a.date || a.createdAt);
-    if (dateDiff !== 0) return dateDiff;
-    return (b.createdAt || 0) - (a.createdAt || 0);
-  })
-);
+        txs.sort((a, b) => {
+          const dateDiff = new Date(b.date || b.createdAt) - new Date(a.date || a.createdAt);
+          if (dateDiff !== 0) return dateDiff;
+          return (b.createdAt || 0) - (a.createdAt || 0);
+        })
+      );
       setLoadingData(false);
     });
     return unsubscribe;
@@ -104,6 +104,11 @@ export default function Home({ user, onLogout }) {
     if (filters.search && !`${t.description} ${t.category}`.toLowerCase().includes(filters.search.toLowerCase())) return false;
     return true;
   });
+
+  const filteredTotal = useMemo(() => {
+    if (filters.category === "all") return null;
+    return filtered.reduce((s, t) => s + t.amount, 0);
+  }, [filtered, filters.category]);
 
   const grouped = useMemo(() => {
     const groups = {};
@@ -202,6 +207,14 @@ export default function Home({ user, onLogout }) {
           </button>
         </div>
 
+        {filteredTotal !== null && (
+          <p className="category-total">
+            Total for <strong>{filters.category}</strong>
+            {filters.month !== "all" ? ` in ${filters.month}` : ""}:{" "}
+            {filteredTotal.toFixed(3)} OMR
+          </p>
+        )}
+
         {filtered.length === 0 && <p className="empty">No transactions match...</p>}
 
         {Object.entries(grouped).map(([month, txs]) => (
@@ -220,10 +233,10 @@ export default function Home({ user, onLogout }) {
                         {t.type === "income" ? "+" : "-"}{t.amount.toFixed(3)} OMR
                       </span>
                       {t.date && (
-  <span className="tx-date">
-    {t.date.split("-").reverse().join("/")}
-  </span>
-)}
+                        <span className="tx-date">
+                          {t.date.split("-").reverse().join("/")}
+                        </span>
+                      )}
                     </div>
                     <button className="edit-btn" onClick={() => openEditModal(t)}>✎</button>
                     <button className="delete-btn" onClick={() => deleteTransaction(t.id)}>✕</button>

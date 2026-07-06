@@ -82,6 +82,13 @@
   font-size: 14px;
 }
 
+.category-total {
+  font-size: 14px;
+  font-weight: 600;
+  color: #a5b4fc;
+  margin: 0 0 12px;
+}
+
 .transactions ul {
   list-style: none;
   padding: 0;
