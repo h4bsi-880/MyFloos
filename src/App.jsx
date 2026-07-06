@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import "./index.css";
 import InstallPrompt from "./components/InstallPrompt";
+import LoadingScreen from "./components/LoadingScreen";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -19,18 +20,8 @@ export default function App() {
   }, []);
 
   if (checking) {
-    return (
-      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: "white", gap: 16, background: "#0f172a" }}>
-        <svg width="56" height="56" viewBox="0 0 200 200">
-          <circle cx="100" cy="100" r="85" fill="#0f172a" stroke="#c8102e" strokeWidth="10" />
-          <circle cx="100" cy="100" r="68" fill="none" stroke="#00732f" strokeWidth="6" />
-          <path d="M62 128 L88 88 L112 106 L146 62" fill="none" stroke="white" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M146 62 L146 88 M146 62 L120 62" fill="none" stroke="white" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-        <p style={{ opacity: 0.7, fontSize: 14 }}>Loading FloosTrack...</p>
-      </div>
-    );
-  }
+  return <LoadingScreen />;
+}
 
   if (!user) {
     return (
