@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import "./index.css";
 import InstallPrompt from "./components/InstallPrompt";
 import LoadingScreen from "./components/LoadingScreen";
+import Footer from "./components/Footer";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -20,22 +21,29 @@ export default function App() {
   }, []);
 
   if (checking) {
-  return <LoadingScreen />;
+  return (
+    <>
+      <LoadingScreen />
+      <Footer />
+    </>
+  );
 }
 
   if (!user) {
-    return (
-      <>
-        <Login />
-        <InstallPrompt />
-      </>
-    );
-  }
-
   return (
     <>
-      <Home user={user} onLogout={() => signOut(auth)} />
+      <Login />
       <InstallPrompt />
+      <Footer />
     </>
   );
+}
+
+  return (
+  <>
+    <Home user={user} onLogout={() => signOut(auth)} />
+    <InstallPrompt />
+    <Footer />
+  </>
+);
 }
