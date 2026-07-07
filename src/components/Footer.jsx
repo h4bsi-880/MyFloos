@@ -7,7 +7,7 @@ export default function Footer() {
       <span>Created by Mohamed Al Habsi</span>
       <a href="https://instagram.com/H4BSI" target="_blank" rel="noopener noreferrer" className="footer-insta">
         <FaInstagram size={14} />
-        @H4BSI
+        H4BSI
       </a>
     </footer>
   );
