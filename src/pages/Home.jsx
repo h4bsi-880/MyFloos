@@ -53,11 +53,20 @@ export default function Home({ user, onLogout }) {
     return unsubscribe;
   }, [user.uid]);
 
-  // Load budgets once (single document)
+  // Load budgets once (single document), auto-resetting each new month
   useEffect(() => {
     const budgetRef = doc(db, "users", user.uid, "meta", "budgets");
     const unsubscribe = onSnapshot(budgetRef, (snap) => {
-      setBudgets(snap.exists() ? snap.data() : {});
+      const data = snap.exists() ? snap.data() : {};
+      const currentMonth = monthKey(Date.now());
+      if (data._month !== currentMonth) {
+        // New month — wipe old budget limits, keep transactions untouched
+        setBudgets({});
+        setDoc(budgetRef, { _month: currentMonth });
+      } else {
+        const { _month, ...rest } = data;
+        setBudgets(rest);
+      }
     });
     return unsubscribe;
   }, [user.uid]);
@@ -156,7 +165,7 @@ export default function Home({ user, onLogout }) {
   async function updateBudgets(newBudgets) {
     setBudgets(newBudgets);
     const budgetRef = doc(db, "users", user.uid, "meta", "budgets");
-    await setDoc(budgetRef, newBudgets);
+    await setDoc(budgetRef, { ...newBudgets, _month: monthKey(Date.now()) });
   }
   if (loadingData) {
     return <LoadingScreen />;
