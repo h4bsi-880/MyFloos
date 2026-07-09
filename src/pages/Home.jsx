@@ -53,19 +53,22 @@ export default function Home({ user, onLogout }) {
     return unsubscribe;
   }, [user.uid]);
 
-  // Load budgets once (single document), auto-resetting each new month
+  // Load budgets, resetting the displayed values to 0 each new month (no auto-write, no loop)
   useEffect(() => {
     const budgetRef = doc(db, "users", user.uid, "meta", "budgets");
     const unsubscribe = onSnapshot(budgetRef, (snap) => {
       const data = snap.exists() ? snap.data() : {};
       const currentMonth = monthKey(Date.now());
-      if (data._month !== currentMonth) {
-        // New month — wipe old budget limits, keep transactions untouched
-        setBudgets({});
-        setDoc(budgetRef, { _month: currentMonth });
+      const { _month, ...storedBudgets } = data;
+
+      if (_month !== currentMonth) {
+        const resetBudgets = {};
+        Object.keys(storedBudgets).forEach((category) => {
+          resetBudgets[category] = 0;
+        });
+        setBudgets(resetBudgets);
       } else {
-        const { _month, ...rest } = data;
-        setBudgets(rest);
+        setBudgets(storedBudgets);
       }
     });
     return unsubscribe;
