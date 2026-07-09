@@ -18,10 +18,9 @@ import CategoryChart from "../components/CategoryChart";
 import FilterBar from "../components/FilterBar";
 import BudgetManager from "../components/BudgetManager";
 import { exportToPDF } from "../utils/exportPDF";
-import "../styles/summary.css";
-import { getCategoryIcon } from "../utils/categoryIcons";
-import { Plus } from "lucide-react";
+import { getCategoryEmoji } from "../utils/categoryIcons";
 import LoadingScreen from "../components/LoadingScreen";
+import "../styles/summary.css";
 
 function monthKey(timestamp) {
   const d = new Date(timestamp);
@@ -160,8 +159,9 @@ export default function Home({ user, onLogout }) {
     await setDoc(budgetRef, newBudgets);
   }
   if (loadingData) {
-  return <LoadingScreen />;
-}
+    return <LoadingScreen />;
+  }
+
   return (
     <div className="home">
       <Header user={user} onLogout={onLogout} />
@@ -173,13 +173,13 @@ export default function Home({ user, onLogout }) {
       </div>
 
       <div className="button-row">
-  <button className="btn income-btn" onClick={() => openAddModal("income")}>
-    <Plus size={16} /> Add Income
-  </button>
-  <button className="btn expense-btn" onClick={() => openAddModal("expense")}>
-    <Plus size={16} /> Add Expense
-  </button>
-</div>
+        <button className="btn income-btn" onClick={() => openAddModal("income")}>
+          💰 Add Income
+        </button>
+        <button className="btn expense-btn" onClick={() => openAddModal("expense")}>
+          💸 Add Expense
+        </button>
+      </div>
 
       <CategoryChart transactions={transactions} />
 
@@ -226,15 +226,12 @@ export default function Home({ user, onLogout }) {
               {txs.map((t) => (
                 <li key={t.id} className={t.type}>
                   <div className="tx-info">
-  <div className="tx-desc-row">
-    {(() => {
-      const Icon = getCategoryIcon(t.category);
-      return <Icon size={16} className="tx-icon" />;
-    })()}
-    <span className="tx-desc">{t.description}</span>
-  </div>
-  <span className="tx-category">{t.category}</span>
-</div>
+                    <div className="tx-desc-row">
+                      <span className="tx-emoji">{getCategoryEmoji(t.category)}</span>
+                      <span className="tx-desc">{t.description}</span>
+                    </div>
+                    <span className="tx-category">{t.category}</span>
+                  </div>
                   <div className="tx-right">
                     <div className="tx-amount-date">
                       <span className="tx-amount">

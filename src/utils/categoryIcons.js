@@ -1,52 +1,28 @@
-import {
-  ShoppingCart,
-  Shirt,
-  Coffee,
-  HeartPulse,
-  Sparkles,
-  Wrench,
-  Fuel,
-  Home,
-  Gamepad2,
-  Cpu,
-  Sofa,
-  Dumbbell,
-  GraduationCap,
-  Landmark,
-  Receipt,
-  Film,
-  MoreHorizontal,
-  Wallet,
-  Gift,
-  Briefcase,
-} from "lucide-react";
-
-// Expense categories
-export const CATEGORY_ICONS = {
-  Food: Coffee,
-  Groceries: ShoppingCart,
-  Clothing: Shirt,
-  Coffee: Coffee,
-  Health: HeartPulse,
-  Cosmetics: Sparkles,
-  "Car Maintenance": Wrench,
-  Petrol: Fuel,
-  "Home Maintenance": Home,
-  Gaming: Gamepad2,
-  Electronics: Cpu,
-  Furniture: Sofa,
-  Gym: Dumbbell,
-  School: GraduationCap,
-  University: Landmark,
-  Bills: Receipt,
-  Entertainment: Film,
-  Other: MoreHorizontal,
+export const CATEGORY_EMOJIS = {
+  Food: "🍔",
+  Groceries: "🛒",
+  Clothing: "👕",
+  Coffee: "☕",
+  Health: "❤️",
+  Cosmetics: "💄",
+  "Car Maintenance": "🔧",
+  Petrol: "⛽",
+  "Home Maintenance": "🏠",
+  Gaming: "🎮",
+  Electronics: "💻",
+  Furniture: "🛋️",
+  Gym: "🏋️",
+  School: "🎒",
+  University: "🎓",
+  Bills: "🧾",
+  Entertainment: "🎬",
+  Other: "📦",
   // Income categories
-  Salary: Wallet,
-  Gift: Gift,
-  Freelance: Briefcase,
+  Salary: "💰",
+  Gift: "🎁",
+  Freelance: "💼",
 };
-
-export function getCategoryIcon(category) {
-  return CATEGORY_ICONS[category] || MoreHorizontal;
+ 
+export function getCategoryEmoji(category) {
+  return CATEGORY_EMOJIS[category] || "📦";
 }

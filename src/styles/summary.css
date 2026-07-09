@@ -294,3 +294,16 @@
 .export-btn:hover {
   background: #2f3d5c;
 }
+.summary-emoji {
+  font-size: 15px;
+}
+
+.tx-emoji {
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.category-preview-emoji {
+  font-size: 20px;
+  flex-shrink: 0;
+}
