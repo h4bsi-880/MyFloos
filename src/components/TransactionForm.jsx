@@ -11,10 +11,17 @@ export default function TransactionForm({ type, initialData, onSave, onClose }) 
   const [category, setCategory] = useState(
     initialData?.category || (type === "income" ? INCOME_CATEGORIES[0] : EXPENSE_CATEGORIES[0])
   );
-  const [date, setDate] = useState(
-    initialData?.date || new Date().toISOString().split("T")[0]
-  );
+  function getLocalDateString() {
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
 
+const [date, setDate] = useState(
+  initialData?.date || getLocalDateString()
+);
   const categories = type === "income" ? INCOME_CATEGORIES : EXPENSE_CATEGORIES;
 
   function handleSubmit(e) {
