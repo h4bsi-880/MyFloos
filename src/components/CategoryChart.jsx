@@ -1,4 +1,5 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from "recharts";
+import { getCategoryEmoji } from "../utils/categoryIcons";
 import "../styles/chart.css";
 
 const COLORS = ["#6d5df6", "#22c55e", "#f59e0b", "#ef4444", "#06b6d4", "#ec4899", "#84cc16"];
@@ -11,8 +12,15 @@ export default function CategoryChart({ transactions }) {
       expenseData[t.category] = (expenseData[t.category] || 0) + t.amount;
     });
 
+  const total = Object.values(expenseData).reduce((s, v) => s + v, 0);
+
   const data = Object.entries(expenseData)
-    .map(([name, value]) => ({ name, value }))
+    .map(([name, value]) => ({
+      name,
+      emoji: getCategoryEmoji(name),
+      value,
+      percent: total > 0 ? (value / total) * 100 : 0,
+    }))
     .sort((a, b) => b.value - a.value);
 
   if (data.length === 0) {
@@ -44,20 +52,26 @@ export default function CategoryChart({ transactions }) {
             </filter>
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="#24304a" horizontal={false} />
-          <XAxis type="number" stroke="#64748b" tick={{ fontSize: 11 }} />
+          <XAxis
+            type="number"
+            stroke="#64748b"
+            tick={{ fontSize: 11 }}
+            tickFormatter={(v) => `${v.toFixed(0)}%`}
+            domain={[0, 100]}
+          />
           <YAxis
             type="category"
-            dataKey="name"
+            dataKey="emoji"
             stroke="#64748b"
-            tick={{ fontSize: 12 }}
-            width={100}
+            tick={{ fontSize: 20 }}
+            width={50}
           />
           <Tooltip
-            formatter={(value) => `${value.toFixed(3)} OMR`}
+            formatter={(value, name, props) => [`${props.payload.percent.toFixed(1)}%`, props.payload.name]}
             contentStyle={{ background: "#151c2c", border: "1px solid #24304a", borderRadius: 10 }}
             cursor={{ fill: "rgba(255,255,255,0.04)" }}
           />
-          <Bar dataKey="value" radius={[0, 8, 8, 0]} filter="url(#barShadow)" barSize={26}>
+          <Bar dataKey="percent" radius={[0, 8, 8, 0]} filter="url(#barShadow)" barSize={26}>
             {data.map((_, i) => (
               <Cell key={i} fill={`url(#barGradient${i})`} />
             ))}
