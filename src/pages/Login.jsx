@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -10,6 +11,7 @@ import Logo from "../components/Logo";
 import "../styles/login.css";
 
 export default function Login() {
+  const { t } = useTranslation();
   const [isSignup, setIsSignup] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -70,14 +72,14 @@ export default function Login() {
           <Logo size={64} />
         </div>
         <h1 className="login-logo">Floos<span>Track</span></h1>
-        <p className="login-subtitle">{isSignup ? "Create your account" : "Welcome back"}</p>
+        <p className="login-subtitle">{isSignup ? t("login.createAccount") : t("login.welcomeBack")}</p>
 
         {error && <p className="login-error">{error}</p>}
 
         <form onSubmit={handleSubmit}>
           {isSignup && (
             <>
-              <label>Name</label>
+              <label>{t("login.name")}</label>
               <input
                 type="text"
                 value={name}
@@ -88,7 +90,7 @@ export default function Login() {
             </>
           )}
 
-          <label>Email</label>
+          <label>{t("login.email")}</label>
           <input
             type="email"
             value={email}
@@ -97,7 +99,7 @@ export default function Login() {
             required
           />
 
-          <label>Password</label>
+          <label>{t("login.password")}</label>
           <input
             type="password"
             value={password}
@@ -108,20 +110,20 @@ export default function Login() {
           />
 
           <button type="submit" className="btn income-btn login-submit" disabled={loading}>
-            {loading ? "Please wait..." : isSignup ? "Sign Up" : "Log In"}
+            {loading ? t("login.pleaseWait") : isSignup ? t("login.signup") : t("login.login")}
           </button>
         </form>
 
-        <div className="login-divider">or</div>
+        <div className="login-divider">{t("login.or")}</div>
 
         <button className="google-btn" onClick={handleGoogleSignIn} disabled={loading}>
-          Continue with Google
+          {t("login.continueWithGoogle")}
         </button>
 
         <p className="login-toggle">
-          {isSignup ? "Already have an account?" : "Don't have an account?"}{" "}
+          {isSignup ? t("login.haveAccount") : t("login.noAccount")}{" "}
           <span onClick={() => setIsSignup(!isSignup)}>
-            {isSignup ? "Log In" : "Sign Up"}
+            {isSignup ? t("login.login") : t("login.signup")}
           </span>
         </p>
       </div>
